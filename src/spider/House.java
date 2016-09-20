@@ -1,20 +1,34 @@
 package spider;
 
 import java.util.List;
+import java.util.Map;
 
 public class House {
 	private String title;
 	private String price;
 	private String unit;
-	private List<String> tip;
-	private List<String> img;
+	private List<String> tags;
+	private List<String> imgs;
 	private String date;
 	private String descript;
-	private List<String> setup;
 	private String lat;
 	private String lon;
 	private List<String> lifearound;
+	private String phone;
+	private Map<String,String> houseInfo;
 	
+	public Map<String, String> getHouseInfo() {
+		return houseInfo;
+	}
+	public void setHouseInfo(Map<String, String> houseInfo) {
+		this.houseInfo = houseInfo;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 	public String getTitle() {
 		return title;
 	}
@@ -59,28 +73,23 @@ public class House {
 	public void setLon(String lon) {
 		this.lon = lon;
 	}
-	public List<String> getTip() {
-		return tip;
-	}
-	public void setTip(List<String> tip) {
-		this.tip = tip;
-	}
-	public List<String> getImg() {
-		return img;
-	}
-	public void setImg(List<String> img) {
-		this.img = img;
-	}
-	public List<String> getSetup() {
-		return setup;
-	}
-	public void setSetup(List<String> setup) {
-		this.setup = setup;
-	}
 	public List<String> getLifearound() {
 		return lifearound;
 	}
 	public void setLifearound(List<String> lifearound) {
 		this.lifearound = lifearound;
 	}
+	public List<String> getTags() {
+		return tags;
+	}
+	public void setTags(List<String> tags) {
+		this.tags = tags;
+	}
+	public List<String> getImgs() {
+		return imgs;
+	}
+	public void setImgs(List<String> imgs) {
+		this.imgs = imgs;
+	}
+	
 }
