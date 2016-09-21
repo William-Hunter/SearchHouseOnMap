@@ -1,6 +1,7 @@
 package dao;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,8 +11,6 @@ import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-
 import spider.House;
 
 public class Access {	
@@ -20,16 +19,6 @@ public class Access {
 		static ResultSet rs;
 		static Connection con;
 		static PreparedStatement ps;
-
-		public static void main(String[] args) throws SQLException, ClassNotFoundException {
-
-			// logger.debug(insert(3,"will")+" row be operator");
-			// show(select(12));
-			// logger.debug(delete(3)+" row be operator");
-			// logger.debug(change(12,"william")+" row be operator");
-			// show(selectAll());
-			logger.debug("the program is end");
-		}
 
 		public Access() {
 			try {
@@ -53,12 +42,32 @@ public class Access {
 			}
 		}
 		
-		
-		public static boolean insert(House house) throws ClassNotFoundException{
-			Class _class=Class.forName("spider.House");
-			Field[] fields1=_class.getDeclaredFields();
-			Field[] fields2=_class.getFields();
-			System.out.println();
+		//调用私用属性会产生意外
+		public static boolean insert(House house) throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException{
+			StringBuilder sql=new StringBuilder("INSERT INTO ");
+			StringBuilder value=new StringBuilder("value(");
+			
+//			"INSERT INTO House(...) value(...)"
+			
+			Class _class=house.getClass();
+//			_class.getTypeName();
+			sql.append(_class.getSimpleName()+"(");
+			Field[] fields=_class.getDeclaredFields();
+			for(Field field:fields){
+				sql.append(","+field.getName());	
+				value.append(",'?'");		
+			}
+			
+			
+			sql.append(") ");
+			value.append(")");
+			
+			sql.append(value);
+			System.out.println(sql);
+			
+
+			
+			
 			return false;
 			
 		}

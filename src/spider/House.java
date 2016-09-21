@@ -4,18 +4,18 @@ import java.util.List;
 import java.util.Map;
 
 public class House {
-	private String title;
-	private String price;
-	private String unit;
-	private List<String> tags;
-	private List<String> imgs;
-	private String date;
-	private String descript;
-	private String lat;
-	private String lon;
-	private List<String> lifearound;
-	private String phone;
-	private Map<String,String> houseInfo;
+	public String title;
+	public String price;
+	public String unit;
+	public List<String> tags;
+	public List<String> imgs;
+	public String time;
+	public String descript;
+	public String lat;
+	public String lon;
+	public List<String> lifearound;
+	public String phone;
+	public Map<String,String> houseInfo;
 	
 	public Map<String, String> getHouseInfo() {
 		return houseInfo;

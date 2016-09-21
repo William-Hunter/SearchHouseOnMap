@@ -27,7 +27,7 @@ public class Spider {
 		access=new Access();
 	}
 
-	public boolean menu(String homeUrl) throws IOException, ClassNotFoundException{
+	public boolean menu(String homeUrl) throws IOException, ClassNotFoundException, IllegalArgumentException, IllegalAccessException{
 		if(access.isContect()){
 			return false;
 		}
@@ -40,7 +40,7 @@ public class Spider {
 		return true;
 	}
 
-	public String list(String listUrl) throws IOException, ClassNotFoundException {
+	public String list(String listUrl) throws IOException, ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
 //		System.out.println("list begin");
 		number++;
 		System.out.println(number+":"+listUrl);
@@ -64,7 +64,7 @@ public class Spider {
 		return result;
 	}
 
-	public void page(String pageUrl) throws IOException, ClassNotFoundException {
+	public void page(String pageUrl) throws IOException, ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
 //		System.out.println("house bengin");		
 //		System.out.println(number +":"+ pageUrl);
 		Element element = null;
