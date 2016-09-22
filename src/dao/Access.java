@@ -43,52 +43,44 @@ public class Access {
 		}
 		
 		//调用私用属性会产生意外
-		public static boolean insert(House house) throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException{
+		public static int insert(House house) throws Exception{
+			
 			StringBuilder sql=new StringBuilder("INSERT INTO ");
-			StringBuilder value=new StringBuilder("value(");
-			
-//			"INSERT INTO House(...) value(...)"
-			
+			StringBuilder value=new StringBuilder("VALUES(");			
 			Class _class=house.getClass();
-//			_class.getTypeName();
 			sql.append(_class.getSimpleName()+"(");
 			Field[] fields=_class.getDeclaredFields();
-			for(Field field:fields){
-				sql.append(","+field.getName());	
-				value.append(",'?'");		
-			}
-			
-			
+			Field field=null;
+			for(int index=0;index<fields.length;index++){
+				sql.append(fields[index].getName());
+				value.append("?");
+				System.out.println(fields[index].getName());				
+				if(index<(fields.length-1)){
+					sql.append(",");
+					value.append(",");
+				}
+			}			
 			sql.append(") ");
 			value.append(")");
-			
 			sql.append(value);
 			System.out.println(sql);
 			
-
-			
-			
-			return false;
-			
+			ps = con.prepareStatement(sql.toString());	
+			for(int index=0;index<fields.length;index++){
+				System.out.println(fields[index].get(house));
+				ps.setObject(index+1, fields[index].get(house));
+			}
+		
+			return ps.executeUpdate();	
 		}
 		
 		
-		
 
-		public static void show(ResultSet resultSet) throws SQLException {
-			System.out.println("The result is:\n-------------------------");
-			resultSet.first();
-			do {
-				System.out.println("id:" + resultSet.getInt("id") + "\tname:" + resultSet.getString("name"));
-			} while (resultSet.next());
-			System.out.println();
-		}
-
-		public static ResultSet select(int key) throws ClassNotFoundException, SQLException {
-			sql = "SELECT * FROM one WHERE id= ? "; // 表名不能作为参数
-			ps = con.prepareStatement(sql);
-			ps.setInt(1, key);
-			return ps.executeQuery();
+		public static int add() throws ClassNotFoundException, SQLException {
+			String sql = "INSERT INTO House(title) VALUES('888')"; // 表名不能作为参数
+			ps = con.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
+			
+			return ps.executeUpdate();
 		}
 
 

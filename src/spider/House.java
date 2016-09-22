@@ -10,7 +10,7 @@ public class House {
 	public List<String> tags;
 	public List<String> imgs;
 	public String time;
-	public String descript;
+	public String description;
 	public String lat;
 	public String lon;
 	public List<String> lifearound;
@@ -48,19 +48,19 @@ public class House {
 		this.unit = unit;
 	}
 	
-	public String getDate() {
-		return date;
+	public String getTime() {
+		return time;
 	}
-	public void setDate(String date) {
-		this.date = date;
-	}
-	public String getDescript() {
-		return descript;
-	}
-	public void setDescript(String descript) {
-		this.descript = descript;
+	public void setTime(String time) {
+		this.time = time;
 	}
 	
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public String getLat() {
 		return lat;
 	}

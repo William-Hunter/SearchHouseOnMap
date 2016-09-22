@@ -27,7 +27,7 @@ public class Spider {
 		access=new Access();
 	}
 
-	public boolean menu(String homeUrl) throws IOException, ClassNotFoundException, IllegalArgumentException, IllegalAccessException{
+	public boolean menu(String homeUrl) throws Exception{
 		if(access.isContect()){
 			return false;
 		}
@@ -40,7 +40,7 @@ public class Spider {
 		return true;
 	}
 
-	public String list(String listUrl) throws IOException, ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
+	public String list(String listUrl) throws Exception {
 //		System.out.println("list begin");
 		number++;
 		System.out.println(number+":"+listUrl);
@@ -64,7 +64,7 @@ public class Spider {
 		return result;
 	}
 
-	public void page(String pageUrl) throws IOException, ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
+	public void page(String pageUrl) throws Exception {
 //		System.out.println("house bengin");		
 //		System.out.println(number +":"+ pageUrl);
 		Element element = null;
@@ -100,10 +100,10 @@ public class Spider {
 		house.setImgs(imglist);
 
 		element = doc.select("span.tips").first();
-		house.setDate(element.text());
+		house.setTime(element.text());
 
 		element = doc.select("p#desc").first();
-		house.setDescript(element.text());
+		house.setDescription(element.text());
 
 		elements = doc.select("ul.icon-list li");
 		List<String> lifearound = new ArrayList<String>();
