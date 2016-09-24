@@ -17,20 +17,13 @@ import dao.Access;
 
 public class Spider {
 	static Logger logger = LoggerFactory.getLogger(Spider.class);
-	static House currentHouse;
 	static int number;
-	static Access access;
 
 	Spider() {
-		currentHouse=new House();
 		number = 0;
-		access=new Access();
 	}
 
 	public boolean menu(String homeUrl) throws Exception{
-		if(access.isContect()){
-			return false;
-		}
 		System.out.println("menu begin");
 		String href=homeUrl;
 		do{
@@ -86,18 +79,18 @@ public class Spider {
 		house.setUnit(element.text());
 
 		elements = doc.select("ul.tags-list>li");
-		List<String> tags = new ArrayList<String>();
+		StringBuilder tags=new StringBuilder();
 		for (Element tip : elements) {
-			tags.add(tip.text());
+			tags.append(tip.text()+",");
 		}
-		house.setTags(tags);
+		house.setTags(tags.toString());
 
 		elements = doc.select("ul#pic-list img");
-		List<String> imglist = new ArrayList<String>();
+		StringBuilder imglist=new StringBuilder();
 		for (Element pic : elements) {
-			imglist.add(pic.absUrl("lazy_src"));
+			imglist.append(pic.absUrl("lazy_src")+",");
 		}
-		house.setImgs(imglist);
+		house.setImgs(imglist.toString());
 
 		element = doc.select("span.tips").first();
 		house.setTime(element.text());
@@ -106,11 +99,11 @@ public class Spider {
 		house.setDescription(element.text());
 
 		elements = doc.select("ul.icon-list li");
-		List<String> lifearound = new ArrayList<String>();
+		StringBuilder lifearound=new StringBuilder();
 		for (Element setup : elements) {
-			lifearound.add(setup.text());
+			lifearound.append(setup.text()+",");
 		}
-		house.setLifearound(lifearound);
+		house.setLifearound(lifearound.toString());
 
 		element = doc.select("script[type=\"text/javascript\"]").first();
 		String script = element.toString();
@@ -131,17 +124,17 @@ public class Spider {
 		house.setPhone(element.text());
 
 		elements = doc.select("ul.house-info-list>li");
-		Map<String, String> map = new HashMap<String, String>();
+		StringBuilder houseInfo=new StringBuilder();
 		for (Element li : elements) {
 			String key = li.select("i.tips").first().text();
 			String value = li.select("span").first().text();
-			map.put(key, value);
+			houseInfo.append(key+"="+value+",");
 		}
-		house.setHouseInfo(map);
+		house.setHouseInfo(houseInfo.toString());
 
-//		this.currentHouse=house;
-		access.insert(house);
-//		System.out.println("house end");
+		if(0<Access.insert(house)){
+            System.out.println("房子插入成功");
+        }
 	}
 
 }

@@ -7,23 +7,49 @@ public class House {
 	public String title;
 	public String price;
 	public String unit;
-	public List<String> tags;
-	public List<String> imgs;
+	public String tags;
+	public String imgs;
 	public String time;
 	public String description;
 	public String lat;
 	public String lon;
-	public List<String> lifearound;
+	public String lifearound;
 	public String phone;
-	public Map<String,String> houseInfo;
-	
-	public Map<String, String> getHouseInfo() {
-		return houseInfo;
-	}
-	public void setHouseInfo(Map<String, String> houseInfo) {
-		this.houseInfo = houseInfo;
-	}
-	public String getPhone() {
+	public String houseInfo;
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public String getImgs() {
+        return imgs;
+    }
+
+    public void setImgs(String imgs) {
+        this.imgs = imgs;
+    }
+
+    public String getLifearound() {
+        return lifearound;
+    }
+
+    public void setLifearound(String lifearound) {
+        this.lifearound = lifearound;
+    }
+
+    public String getHouseInfo() {
+        return houseInfo;
+    }
+
+    public void setHouseInfo(String houseInfo) {
+        this.houseInfo = houseInfo;
+    }
+
+    public String getPhone() {
 		return phone;
 	}
 	public void setPhone(String phone) {
@@ -73,23 +99,6 @@ public class House {
 	public void setLon(String lon) {
 		this.lon = lon;
 	}
-	public List<String> getLifearound() {
-		return lifearound;
-	}
-	public void setLifearound(List<String> lifearound) {
-		this.lifearound = lifearound;
-	}
-	public List<String> getTags() {
-		return tags;
-	}
-	public void setTags(List<String> tags) {
-		this.tags = tags;
-	}
-	public List<String> getImgs() {
-		return imgs;
-	}
-	public void setImgs(List<String> imgs) {
-		this.imgs = imgs;
-	}
+
 	
 }
