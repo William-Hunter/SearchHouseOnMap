@@ -10,15 +10,16 @@ import java.sql.*;
 
 public class Access {
     static Logger logger = LoggerFactory.getLogger(Access.class);
-    static String sql;
+    static StringBuilder sql;
     static ResultSet rs;
-    static Connection con;
+    public static Connection con;
     static PreparedStatement ps;
 
     public Access() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/searchhouse", "root", "root");
+            con.setAutoCommit(false);
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
@@ -41,9 +42,16 @@ public class Access {
         return con.isClosed();
     }
 
+    public static void rollback() throws SQLException {
+        con.rollback();
+    }
+    public static void commit() throws SQLException {
+        con.commit();
+    }
+
     //调用私用属性会产生意外
     public static int insert(House house) throws Exception {
-        StringBuilder sql = new StringBuilder("INSERT INTO ");
+        sql = new StringBuilder("INSERT INTO ");
         StringBuilder value = new StringBuilder("VALUES(");
         Class _class = house.getClass();
         sql.append(_class.getSimpleName() + "(");

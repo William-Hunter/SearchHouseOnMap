@@ -10,7 +10,7 @@ public class House {
 	public String tags;
 	public String imgs;
 	public String time;
-	public String description;
+//	public String description;
 	public String lat;
 	public String lon;
 	public String lifearound;
@@ -81,12 +81,12 @@ public class House {
 		this.time = time;
 	}
 	
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
+//	public String getDescription() {
+//		return description;
+//	}
+//	public void setDescription(String description) {
+//		this.description = description;
+//	}
 	public String getLat() {
 		return lat;
 	}
