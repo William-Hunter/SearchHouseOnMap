@@ -1,17 +1,11 @@
 package dao;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+import org.jsoup.select.Evaluator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import spider.House;
+import java.lang.reflect.Field;
+import java.sql.*;
 
 public class Access {	
 		static Logger logger = LoggerFactory.getLogger(Access.class);
@@ -22,7 +16,7 @@ public class Access {
 
 		public Access() {
 			try {
-				Class.forName("com.mysql.jdbc.Driver");
+				Evaluator.Class.forName("com.mysql.jdbc.Driver");
 				con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/searchhouse", "root", "root");
 			} catch (ClassNotFoundException | SQLException e) {
 				e.printStackTrace();
@@ -65,7 +59,7 @@ public class Access {
 			sql.append(value);
 			System.out.println(sql);
 			
-			ps = con.prepareStatement(sql.toString());	
+			ps = con.prepareStatement(sql.toString());	//设置一个general key？
 			for(int index=0;index<fields.length;index++){
 				System.out.println(fields[index].get(house));
 				ps.setObject(index+1, fields[index].get(house));
