@@ -6,10 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e79bc521-f9e6-4f21-9833-f8f3bf47a8fc" name="Default" comment="添加来构建数据库的sql脚本">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dao/Access.java" afterPath="$PROJECT_DIR$/src/dao/Access.java" />
-    </list>
+    <list default="true" id="e79bc521-f9e6-4f21-9833-f8f3bf47a8fc" name="Default" comment="添加来构建数据库的sql脚本" />
     <ignored path="58Search.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/bin/" />
@@ -625,7 +622,7 @@
       <workItem from="1474720133028" duration="7870000" />
       <workItem from="1474728248253" duration="1922000" />
       <workItem from="1474731094494" duration="16000" />
-      <workItem from="1474765717561" duration="850000" />
+      <workItem from="1474765717561" duration="972000" />
     </task>
     <task id="LOCAL-00001" summary="添加来构建数据库的sql脚本">
       <created>1474726083371</created>
@@ -638,11 +635,11 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11719000" />
+    <option name="totallyTimeSpent" value="11841000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1050" extended-state="7" />
-    <editor active="true" />
+    <frame x="-9" y="-9" width="1938" height="1050" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
