@@ -1,6 +1,8 @@
 package spider;
 
 import java.io.IOException;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,10 +66,15 @@ public class Spider {
         House house = new House();
         Document doc = null;
 
+        boolean timeout=false;
         do {
-            doc = Jsoup.connect(pageUrl).timeout(300000).get();// 设置了连接最大超出时间
+            try {
+                doc = Jsoup.connect(pageUrl).timeout(300000).get();// 设置了连接最大超出时间
+            } catch (SocketTimeoutException|ConnectException e) {
+                timeout=true;
+            }
             element = doc.select("h2").first();
-        } while (element == null);
+        } while (element == null||timeout);
         house.setTitle(element.text());
 
         element = doc.select("span.price").first();
@@ -127,18 +134,16 @@ public class Spider {
         }
         house.setHouseInfo(houseInfo.toString());
 
-       try{
-           if(0<Access.insert(house)){
-               Access.commit();
-               System.out.println("租房信息保存完毕");
-           }
-       }catch (SQLException e){
+        try {
+            if (0 < Access.insert(house)) {
+                Access.commit();
+                System.out.println("租房信息保存完毕");
+            }
+        } catch (SQLException e) {
             Access.rollback();
-       }
+        }
 
-
-
-
+        Thread.sleep(1000);          //线程睡眠一秒，降低访问频率
 
     }
 

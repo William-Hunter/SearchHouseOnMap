@@ -1,4 +1,4 @@
-/*
+﻿/*
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
@@ -12,6 +12,9 @@ File Encoding         : 65001
 
 Date: 2016-09-24 22:12:38
 */
+CREATE DATABASE IF NOT EXISTS `searchhouse` CHARACTER SET utf8;
+
+USE `searchhouse`
 
 SET FOREIGN_KEY_CHECKS=0;
 
