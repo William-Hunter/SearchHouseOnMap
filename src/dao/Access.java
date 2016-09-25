@@ -15,7 +15,7 @@ public class Access {
     public static Connection con;
     static PreparedStatement ps;
 
-    public Access() {
+    public Access() {           //初始化连接数据库
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/searchhouse", "root", "root");
@@ -25,7 +25,7 @@ public class Access {
         }
     }
 
-    public static boolean isContect() throws ClassNotFoundException {
+    public static boolean isContect() throws ClassNotFoundException {           //测试是否连接
         try {
             if (!con.isClosed()) {
                 return true;
@@ -37,15 +37,15 @@ public class Access {
             return false;
         }
     }
-    public static boolean shutDown() throws SQLException {
+    public static boolean shutDown() throws SQLException {      //关闭连接
         con.close();
         return con.isClosed();
     }
 
-    public static void rollback() throws SQLException {
+    public static void rollback() throws SQLException {         //事物回滚
         con.rollback();
     }
-    public static void commit() throws SQLException {
+    public static void commit() throws SQLException {           //手动提交
         con.commit();
     }
 
