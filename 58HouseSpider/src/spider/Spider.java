@@ -1,14 +1,11 @@
 package spider;
 
-import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
+import bean.House;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -65,12 +62,13 @@ public class Spider {
         Elements elements = null;
         House house = new House();
         Document doc = null;
+        house.setURL(pageUrl);
 
         boolean timeout=false;
         do {
             try {
                 doc = Jsoup.connect(pageUrl).timeout(300000).get();// 设置了连接最大超出时间
-            } catch (SocketTimeoutException|ConnectException e) {
+            } catch (SocketTimeoutException|ConnectException|HttpStatusException e) {
                 timeout=true;
             }
             element = doc.select("h2").first();

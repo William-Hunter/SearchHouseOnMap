@@ -1,4 +1,4 @@
-package spider;
+package bean;
 
 import java.util.List;
 import java.util.Map;
@@ -10,12 +10,12 @@ public class House {
 	public String tags;
 	public String imgs;
 	public String time;
-//	public String description;
 	public String lat;
 	public String lon;
 	public String lifearound;
 	public String phone;
 	public String houseInfo;
+	public String URL;
 
     public String getTags() {
         return tags;
@@ -80,13 +80,6 @@ public class House {
 	public void setTime(String time) {
 		this.time = time;
 	}
-	
-//	public String getDescription() {
-//		return description;
-//	}
-//	public void setDescription(String description) {
-//		this.description = description;
-//	}
 	public String getLat() {
 		return lat;
 	}
@@ -100,5 +93,11 @@ public class House {
 		this.lon = lon;
 	}
 
-	
+	public String getURL() {
+		return URL;
+	}
+
+	public void setURL(String URL) {
+		this.URL = URL;
+	}
 }

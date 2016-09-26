@@ -1,4 +1,4 @@
-﻿/*
+/*
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
@@ -10,11 +10,8 @@ Target Server Type    : MYSQL
 Target Server Version : 50710
 File Encoding         : 65001
 
-Date: 2016-09-24 22:12:38
+Date: 2016-09-26 21:09:03
 */
-CREATE DATABASE IF NOT EXISTS `searchhouse` CHARACTER SET utf8;
-
-USE `searchhouse`
 
 SET FOREIGN_KEY_CHECKS=0;
 
@@ -35,5 +32,6 @@ CREATE TABLE `house` (
   `phone` varchar(20) DEFAULT NULL COMMENT '手机号',
   `houseInfo` varchar(200) DEFAULT NULL COMMENT '房子信息',
   `unit` varchar(100) NOT NULL COMMENT '价格单位',
+  `URL` varchar(200) NOT NULL COMMENT '网址',
   PRIMARY KEY (`ids`)
-) ENGINE=InnoDB AUTO_INCREMENT=605 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3528 DEFAULT CHARSET=utf8;
