@@ -1,19 +1,15 @@
 package dao;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import bean.House;
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
-import java.math.MathContext;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Access {
-    static Logger logger = LoggerFactory.getLogger(Access.class);
+    Logger logger=Logger.getLogger(Access.class);
     static StringBuilder sql;
     static ResultSet rs;
     public static Connection con;
@@ -29,7 +25,7 @@ public class Access {
         }
     }
 
-    public static boolean isContect() throws ClassNotFoundException {           //测试是否连接
+    public boolean isContect() throws ClassNotFoundException {           //测试是否连接
         try {
             if (!con.isClosed()) {
                 return true;
@@ -41,20 +37,20 @@ public class Access {
             return false;
         }
     }
-    public static boolean shutDown() throws SQLException {      //关闭连接
+    public boolean shutDown() throws SQLException {      //关闭连接
         con.close();
         return con.isClosed();
     }
 
-    public static void rollback() throws SQLException {         //事物回滚
+    public void rollback() throws SQLException {         //事物回滚
         con.rollback();
     }
-    public static void commit() throws SQLException {           //手动提交
+    public void commit() throws SQLException {           //手动提交
         con.commit();
     }
 
     //调用私用属性会产生意外
-    public static int insert(House house) throws Exception {
+    public int insert(House house) throws Exception {
         sql = new StringBuilder("INSERT INTO ");
         StringBuilder value = new StringBuilder("VALUES(");
         Class _class = house.getClass();
@@ -82,12 +78,12 @@ public class Access {
         return ps.executeUpdate();
     }
 
-    public static String select(String minprice, String maxprice, String radius, String location) throws SQLException, IllegalAccessException {
-        System.out.println("select");
+    public String select(String minprice, String maxprice, String radius, String location) throws SQLException, IllegalAccessException {
+        logger.info(this.getClass().getName()+".select()");
 
-        String[] locations= location.split(",");
-        MathContext param_lon=new MathContext(locations[0]);
-        MathContext param_lat=new MathContext(locations[1]);
+//        String[] locations= location.split(",");
+//        MathContext param_lon=new MathContext(locations[0]);
+//        MathContext param_lat=new MathContext(locations[1]);
 
         sql = new StringBuilder("SELECT * FROM House WHERE price<'"+maxprice+"' AND price>'"+minprice+"'");
         ps = con.prepareStatement(sql.toString());
@@ -96,7 +92,7 @@ public class Access {
         System.out.println(sql);
 
         List<House> list=new LinkedList<House>();
-        House house=null;
+        House house=new House();
         Class _class=house.getClass();
         Field[] fields= _class.getDeclaredFields();
 

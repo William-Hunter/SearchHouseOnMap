@@ -7,6 +7,10 @@
         <element id="directory" name="classes">
           <element id="module-output" name="58HouseMap" />
         </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Java EE 6-Java EE 6" />
+          <element id="library" level="project" name="jar" />
+        </element>
       </element>
     </root>
   </artifact>

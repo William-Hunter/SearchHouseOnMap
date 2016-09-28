@@ -18,4 +18,11 @@
         <servlet-name>Search</servlet-name>
         <url-pattern>/Search</url-pattern>
     </servlet-mapping>
+    <listener>
+        <listener-class>listener.AppListener</listener-class>
+    </listener>
+
+
+
+
 </web-app>
