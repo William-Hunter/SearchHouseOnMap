@@ -1,13 +1,14 @@
 package listener;
 
 import dao.Access;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.sql.SQLException;
 
 public class AppListener implements ServletContextListener {
-	Logger logger=Logger.getLogger(AppListener.class);
+	Logger logger= LoggerFactory.getLogger(AppListener.class);
 
 	public static Access access;
 	@Override

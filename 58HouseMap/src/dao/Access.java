@@ -1,15 +1,16 @@
 package dao;
 
 import com.google.gson.Gson;
-import org.apache.log4j.Logger;
 import bean.House;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Access {
-    Logger logger=Logger.getLogger(Access.class);
+    Logger logger= LoggerFactory.getLogger(Access.class);
     static StringBuilder sql;
     static ResultSet rs;
     public static Connection con;
@@ -71,7 +72,7 @@ public class Access {
 
         ps = con.prepareStatement(sql.toString());
         for (int index = 0; index < fields.length; index++) {
-//            System.out.println(fields[index].getName()+":"+fields[index].get(house));         //字段值打印
+//            logger.debug(fields[index].getName()+":"+fields[index].get(house));         //字段值打印
             ps.setObject(index + 1, fields[index].get(house));
         }
 
@@ -79,18 +80,12 @@ public class Access {
     }
 
     public String select(String minprice, String maxprice, String radius, String location) throws SQLException, IllegalAccessException {
+        logger.info("-----------------------------------------------");
         logger.info(this.getClass().getName()+".select()");
-
-//        String[] locations= location.split(",");
-//        MathContext param_lon=new MathContext(locations[0]);
-//        MathContext param_lat=new MathContext(locations[1]);
-
         sql = new StringBuilder("SELECT * FROM House WHERE price<'"+maxprice+"' AND price>'"+minprice+"'");
         ps = con.prepareStatement(sql.toString());
         rs=ps.executeQuery();
-
-        System.out.println(sql);
-
+        logger.debug("SQL:"+sql.toString());
         List<House> list=new LinkedList<House>();
         House house=new House();
         Class _class=house.getClass();
@@ -104,7 +99,7 @@ public class Access {
             list.add(house);
         }
         Gson gson=new Gson();
-        System.out.println("gson:"+gson.toJson(list));
+        logger.info("-----------------------------------------------");
         return gson.toJson(list);
     }
 
