@@ -21,8 +21,7 @@ public class Search extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response){
-
-
+        response.setCharacterEncoding("UTF-8");
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {

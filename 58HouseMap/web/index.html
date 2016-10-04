@@ -12,7 +12,7 @@
     <!-- 获取map -->
     <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
     <!-- 工具栏 -->
-    <script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>    
+    <script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
     <!-- jquer的cdn -->
     <style type="text/css">
         .button-group {
@@ -45,7 +45,7 @@
         }
 
     </style>
-    
+
 </head>
 <body>
 <div id="container" tabindex="0"></div>
@@ -62,12 +62,13 @@
 </div>
 
 <script>
-    
     var map = new AMap.Map('container', {//地图实例
         resizeEnable: false,    //可放大或缩小
         zoom: 14,                  //放大倍率
         lang: 'zh_ch'
     });
+    var scale = new AMap.Scale();
+    map.addControl(scale);
 
     AMap.plugin('AMap.Geocoder', function () {
         var geocoder = new AMap.Geocoder({
@@ -78,42 +79,46 @@
             bubble: true
         });
         var input = document.getElementById('input');
-
         map.on('click', function (e) {
             marker.setPosition(e.lnglat);
             geocoder.getAddress(e.lnglat, function (status, result) {
                 if (status == 'complete') {
                     input.value = result.regeocode.formattedAddress;
-                    document.getElementById('location').value=e.lnglat;                    
+                    document.getElementById('location').value = e.lnglat;
                 }
             })
         })
-
     });
-
-    AMap.event.addDomListener(document.getElementById('query'), 'click', function() {
+    AMap.event.addDomListener(document.getElementById('query'), 'click', function () {
         var minprice = document.getElementById('minprice').value;
         var maxprice = document.getElementById('maxprice').value;
         var radius = document.getElementById('radius').value;
         var location = document.getElementById('location').value;
 
-        if(!minprice||!maxprice||!radius){
+        if (!minprice || !maxprice || !radius) {
             alert("地理信息不全");
-        }else if(!location){
+        } else if (!location) {
             alert("请重新选取坐标");
-        }else{
-            // alert(minprice+maxprice+radius+location);
-
-            $.post("/Search?minprice="+minprice+"&maxprice="+maxprice+"&radius="+radius+"&location="+location,function(data){
-                alert(data);
+        } else {
+            $.post("/Search?minprice=" + minprice + "&maxprice=" + maxprice + "&radius=" + radius + "&location=" + location, function (data) {
+                var jsonarray = $.parseJSON(data);       //解析json数组
+                $.each(jsonarray, function (i, n) {     //循环解析的数组
+                    marks(n);
+                });
             });
-
         }
-    
-
-
     });
+    function marks(n) {
+        var markers = [];
+        var lon=n.lon;
+        var lat=n.lat;
 
+        var marker = new AMap.Marker({
+            position: "["+lon+","+lat+"]",
+            map: map
+        });
+        markers.push(marker);
+    }
 
 
 </script>
