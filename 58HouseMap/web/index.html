@@ -1,126 +1,45 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <title>在地图上搜索出租房</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>搜索房子</title>
     <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+
+    <script type="text/javascript"
+            src="http://webapi.amap.com/maps?v=1.3&key=4722acf0a9640f220c55a71d05d79bb1"></script>
+    <script src="http://cache.amap.com/lbs/static/jquery-1.9.1.js"></script>
     <script src="http://cache.amap.com/lbs/static/es5.min.js"></script>
-    <!--缓存？-->
-    <script src="http://webapi.amap.com/maps?v=1.3&key=22d3816e107f199992666d6412fa0691"></script>
-    <!-- 获取map -->
-    <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
-    <!-- 工具栏 -->
-    <script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
-    <!-- jquer的cdn -->
+    <script src="http://cache.amap.com/lbs/static/jquery.range.js"></script>
+
     <style type="text/css">
-        .button-group {
-            width: 180px;
-        }
-
-        .button-group .button {
-            width: 150px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .panel {
-            background-color: #ddf;
-            color: #333;
-            border: 1px solid silver;
-            box-shadow: 3px 4px 3px 0px silver;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            border-radius: 5px;
-            overflow: hidden;
-            line-height: 25px;
-        }
-
-        #input {
-            width: 400px;
-            height: 25px;
-            border: 0;
+        #container {
+            width: 1225px;
+            height: 585px;
         }
 
     </style>
-
 </head>
 <body>
-<div id="container" tabindex="0"></div>
-
-<div class='panel'>
-    <input id='input' value='点击地图显示地址/输入地址显示位置' onfocus='this.value=""'></div>
-
-<div class="button-group">
-    <input id='minprice' class="inputtext" type='text' placeholder='最低价'>
-    <input id='maxprice' class="inputtext" type='text' placeholder='最高价'>
-    <input id='radius' class="inputtext" type='text' placeholder='半径(KM)'>
-    <input id='location' class="inputtext" type='hidden' value="">
-    <input id="query" class="button" value="搜索" type="button"/>
-</div>
-
-<script>
-    var map = new AMap.Map('container', {//地图实例
-        resizeEnable: false,    //可放大或缩小
-        zoom: 14,                  //放大倍率
-        lang: 'zh_ch'
+<div id="container"></div>
+<script type="text/javascript">
+    var map = new AMap.Map('container', {
+        resizeEnable: true,
+        zoom: 14
     });
-    var scale = new AMap.Scale();
-    map.addControl(scale);
 
-    AMap.plugin('AMap.Geocoder', function () {
-        var geocoder = new AMap.Geocoder({
-            city: "010"//城市，默认：“全国”
-        });
-        var marker = new AMap.Marker({
-            map: map,
-            bubble: true
-        });
-        var input = document.getElementById('input');
-        map.on('click', function (e) {
-            marker.setPosition(e.lnglat);
-            geocoder.getAddress(e.lnglat, function (status, result) {
-                if (status == 'complete') {
-                    input.value = result.regeocode.formattedAddress;
-                    document.getElementById('location').value = e.lnglat;
-                }
-            })
-        })
-    });
-    AMap.event.addDomListener(document.getElementById('query'), 'click', function () {
-        var minprice = document.getElementById('minprice').value;
-        var maxprice = document.getElementById('maxprice').value;
-        var radius = document.getElementById('radius').value;
-        var location = document.getElementById('location').value;
-
-        if (!minprice || !maxprice || !radius) {
-            alert("地理信息不全");
-        } else if (!location) {
-            alert("请重新选取坐标");
-        } else {
-            $.post("/Search?minprice=" + minprice + "&maxprice=" + maxprice + "&radius=" + radius + "&location=" + location, function (data) {
-                var jsonarray = $.parseJSON(data);       //解析json数组
-                $.each(jsonarray, function (i, n) {     //循环解析的数组
-                    marks(n);
-                });
-            });
-        }
-    });
-    function marks(n) {
-        var markers = [];
-        var lon=n.lon;
-        var lat=n.lat;
-
-        var marker = new AMap.Marker({
-            position: "["+lon+","+lat+"]",
-            map: map
-        });
-        markers.push(marker);
-    }
+    AMap.plugin(['AMap.ToolBar', 'AMap.Scale'], function () {
+        var toolBar = new AMap.ToolBar();                   //工具条和比例尺
+        var scale = new AMap.Scale();
+        map.addControl(toolBar);
+        map.addControl(scale);
+    })
 
 
 </script>
+
+
 </body>
 </html>
