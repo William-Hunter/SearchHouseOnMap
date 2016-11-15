@@ -6,13 +6,13 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>搜索房子</title>
-    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
 
     <script type="text/javascript"
             src="http://webapi.amap.com/maps?v=1.3&key=4722acf0a9640f220c55a71d05d79bb1"></script>
     <script src="http://cache.amap.com/lbs/static/jquery-1.9.1.js"></script>
     <script src="http://cache.amap.com/lbs/static/es5.min.js"></script>
     <script src="http://cache.amap.com/lbs/static/jquery.range.js"></script>
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
 
     <style type="text/css">
         #container {
@@ -24,7 +24,24 @@
 </head>
 <body>
 <div id="container"></div>
+<div id="tip">
+    <span id="info"></span>
+</div>
+
+<div class="button-group">
+    <input id='minprice' class="inputtext" type='text' placeholder='最低价'>
+    <input id='maxprice' class="inputtext" type='text' placeholder='最高价'>
+    <input id='radius' class="inputtext" type='text' placeholder='半径(KM)'>
+    <input id="query" class="button" value="搜索" type="button"/>
+</div>
+
+
+
 <script type="text/javascript">
+
+    var lat = '';
+    var lng = '';
+
     var map = new AMap.Map('container', {
         resizeEnable: true,
         zoom: 14
@@ -35,9 +52,42 @@
         var scale = new AMap.Scale();
         map.addControl(toolBar);
         map.addControl(scale);
-    })
+    });
+
+    map.on('moveend', getCity);
+    function getCity() {
+        map.getCity(function (data) {
+            if (data['province'] && typeof data['province'] === 'string') {
+                document.getElementById('info').innerHTML = '城市：' + (data['city'] || data['province']);
+            }
+        });
+    }
+
+    var marker;
+    function Marker(){
+
+        if(marker){
+            marker.setPosition([lng, lat]);
+//            alert("lng:"+lng+"  lat:"+lat);
+        }else{
+            marker = new AMap.Marker({ //添加自定义点标记
+                map: map,
+                position: [lng, lat], //基点位置
+                offset: new AMap.Pixel(-17, -42), //相对于基点的偏移位置
+                content: '<div class="marker-route marker-marker-bus-from"></div>'   //自定义点标记覆盖物内容
+            });
+//            alert("lng:"+lng+"  lat:"+lat);
+        }
+        marker.setMap(map);
+    }
 
 
+    var clickEventListener = map.on('click', function (e) {
+        lat = e.lnglat.getLat();
+        lng = e.lnglat.getLng();
+//        alert(lng+ ',' +lat);
+        Marker();
+    });
 </script>
 
 
