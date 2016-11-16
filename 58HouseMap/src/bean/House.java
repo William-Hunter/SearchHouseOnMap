@@ -1,8 +1,5 @@
 package bean;
 
-import java.util.List;
-import java.util.Map;
-
 public class House {
 	public String title;
 	public String price;

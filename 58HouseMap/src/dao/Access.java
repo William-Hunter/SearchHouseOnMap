@@ -79,18 +79,23 @@ public class Access {
         return ps.executeUpdate();
     }
 
-    public String select(String minprice, String maxprice, String radius, String location) throws SQLException, IllegalAccessException {
+    /**
+     * 获取合适价位的房子信息，组织成一个list
+     * */
+    public List<House> select(String minprice, String maxprice) throws SQLException, IllegalAccessException {
         logger.info("-----------------------------------------------");
         logger.info(this.getClass().getName()+".select()");
+
         sql = new StringBuilder("SELECT * FROM House WHERE price<'"+maxprice+"' AND price>'"+minprice+"'");
         ps = con.prepareStatement(sql.toString());
-        rs=ps.executeQuery();
+        rs=ps.executeQuery();                                  //得到结果集
         logger.debug("SQL:"+sql.toString());
-        List<House> list=new LinkedList<House>();
-        House house=new House();
+
+        House house=new House();                               //实例一个house对象，获取其中的属性
         Class _class=house.getClass();
         Field[] fields= _class.getDeclaredFields();
 
+        List<House> list=new LinkedList<House>();              //将房子信息添加到list
         for(rs.first();!rs.isAfterLast();rs.next()){
             house=new House();
             for(Field field:fields){
@@ -98,9 +103,8 @@ public class Access {
             }
             list.add(house);
         }
-        Gson gson=new Gson();
         logger.info("-----------------------------------------------");
-        return gson.toJson(list);
+        return list;
     }
 
 

@@ -36,11 +36,10 @@
 </div>
 
 
-
 <script type="text/javascript">
 
     var lat = '';
-    var lng = '';
+    var lon = '';
 
     var map = new AMap.Map('container', {
         resizeEnable: true,
@@ -64,29 +63,40 @@
     }
 
     var marker;
-    function Marker(){
-
-        if(marker){
+    function Marker() {
+        if (marker) {
             marker.setPosition([lng, lat]);
-//            alert("lng:"+lng+"  lat:"+lat);
-        }else{
+        } else {
             marker = new AMap.Marker({ //添加自定义点标记
                 map: map,
-                position: [lng, lat], //基点位置
+                position: [lon, lat], //基点位置
                 offset: new AMap.Pixel(-17, -42), //相对于基点的偏移位置
-                content: '<div class="marker-route marker-marker-bus-from"></div>'   //自定义点标记覆盖物内容
             });
-//            alert("lng:"+lng+"  lat:"+lat);
         }
         marker.setMap(map);
     }
 
-
     var clickEventListener = map.on('click', function (e) {
         lat = e.lnglat.getLat();
-        lng = e.lnglat.getLng();
+        lon = e.lnglat.getLng();
 //        alert(lng+ ',' +lat);
         Marker();
+    });
+
+    AMap.event.addDomListener(document.getElementById('query'), 'click', function () {            //监听id为pantoBtn的元素的点击事件
+        var minprice = document.getElementById('minprice').value;
+        var maxprice = document.getElementById('maxprice').value;
+        var radius = document.getElementById('radius').value;
+        if (!minprice || !maxprice || !radius) {
+            alert("请填写房子信息");
+        } else if (!location) {
+            alert("请重新选取坐标");
+        } else {
+            // alert(minprice+maxprice+radius+);
+            $.post("/Search?minprice=" + minprice + "&maxprice=" + maxprice + "&radius=" + radius + "&lon=" + lon+"&lat="+lat, function (data) {
+                alert(data);
+            });
+        }
     });
 </script>
 
