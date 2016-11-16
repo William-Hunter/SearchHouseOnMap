@@ -86,7 +86,7 @@ public class Access {
         logger.info("-----------------------------------------------");
         logger.info(this.getClass().getName()+".select()");
 
-        sql = new StringBuilder("SELECT * FROM House WHERE price<'"+maxprice+"' AND price>'"+minprice+"'");
+        sql = new StringBuilder("SELECT * FROM House WHERE price<="+maxprice+" AND price>="+minprice+";");
         ps = con.prepareStatement(sql.toString());
         rs=ps.executeQuery();                                  //得到结果集
         logger.debug("SQL:"+sql.toString());
@@ -95,14 +95,20 @@ public class Access {
         Class _class=house.getClass();
         Field[] fields= _class.getDeclaredFields();
 
-        List<House> list=new LinkedList<House>();              //将房子信息添加到list
-        for(rs.first();!rs.isAfterLast();rs.next()){
-            house=new House();
-            for(Field field:fields){
-                field.set(house,rs.getString(field.getName()));
+        List<House> list=new LinkedList<House>();
+
+        try{
+            for(rs.first();!rs.isAfterLast();rs.next()){        //将房子信息添加到list
+                house=new House();
+                for(Field field:fields){
+                    field.set(house,rs.getString(field.getName()));
+                }
+                list.add(house);
             }
-            list.add(house);
+        }catch (NullPointerException|SQLException e){
+            return null;
         }
+
         logger.info("-----------------------------------------------");
         return list;
     }

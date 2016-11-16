@@ -10,6 +10,8 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,7 +21,7 @@ import java.util.Set;
  */
 public class Search extends HttpServlet {
     Logger logger= LoggerFactory.getLogger(Search.class);
-    static BigDecimal ANGLE=new BigDecimal(111.111);
+    static double ANGLE=111.111;
 
     public Search(){
         super();
@@ -30,6 +32,7 @@ public class Search extends HttpServlet {
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("text/json");
         response.setCharacterEncoding("UTF-8");
 
         Map<String,String[]>map=request.getParameterMap();
@@ -42,30 +45,38 @@ public class Search extends HttpServlet {
 
         String minprice=request.getParameter("minprice");
         String maxprice=request.getParameter("maxprice");
-        BigDecimal lat=new BigDecimal(request.getParameter("lat"));
-        BigDecimal lon=new BigDecimal(request.getParameter("lon"));
-        BigDecimal range=rangeToAngle(request.getParameter("radius"));
+        double lat=Double.valueOf(request.getParameter("lat"));
+        double lon=Double.valueOf(request.getParameter("lon"));
+        double range=rangeToAngle(request.getParameter("radius"));
 
+        List<House> list=null;
         try {
-            List<House> list= AppListener.access.select(minprice,maxprice);
-            for(House e:list){
-                BigDecimal Lat=new BigDecimal(e.getLat());          //获取当前房屋记录的座标
-                BigDecimal Lon=new BigDecimal(e.getLon());
-                //计算这个座标是否在半径范围之内
-
-            }
-
-            Gson gson=new Gson();                  //转化成json
-            PrintWriter out = response.getWriter();
-//            logger.debug("json:"+json);
-//            out.write(json);
-        } catch (Exception e) {
+            list= AppListener.access.select(minprice,maxprice);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+        List<House> shitlist =new ArrayList<House>();
+        if(list!=null){
+            for(House e:list){
+                double Lat=Double.valueOf(e.getLat());          //获取当前房屋记录的座标
+                double Lon=Double.valueOf(e.getLon());
+                if(Math.pow(Lat-lat,2)+Math.pow(Lon-lon,2)>Math.pow(range,2)){           //计算这个座标是否在半径范围之内
+                    shitlist.add(e);
+                }
+            }
+            list.removeAll(shitlist);
+        }
+        Gson gson=new Gson();                  //转化成json
+        PrintWriter out = response.getWriter();
+        logger.debug("json:"+gson.toJson(list));
+        out.write(gson.toJson(list));
+
     }
 
-    BigDecimal rangeToAngle(String range){
-         return new BigDecimal(range).divide(ANGLE);
+    double rangeToAngle(String range){
+        return Double.valueOf(range)/ANGLE;
     }
 
 

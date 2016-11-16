@@ -43,7 +43,8 @@
 
     var map = new AMap.Map('container', {
         resizeEnable: true,
-        zoom: 14
+        zoom: 14,
+        center: [116.397428, 39.90923]
     });
 
     AMap.plugin(['AMap.ToolBar', 'AMap.Scale'], function () {
@@ -65,7 +66,7 @@
     var marker;
     function Marker() {
         if (marker) {
-            marker.setPosition([lng, lat]);
+            marker.setPosition([lon, lat]);
         } else {
             marker = new AMap.Marker({ //添加自定义点标记
                 map: map,
@@ -76,10 +77,20 @@
         marker.setMap(map);
     }
 
+    function addmarker(data) {
+        for(var i=0;i<data.length;i++){
+            var point=new AMap.Marker({
+                map:map,
+                position:[data[i].lon,data[i].lat],
+                offset: new AMap.Pixel(-17, -42), //相对于基点的偏移位置
+            });
+        }
+        console.log(i);
+    }
+
     var clickEventListener = map.on('click', function (e) {
         lat = e.lnglat.getLat();
         lon = e.lnglat.getLng();
-//        alert(lng+ ',' +lat);
         Marker();
     });
 
@@ -89,12 +100,15 @@
         var radius = document.getElementById('radius').value;
         if (!minprice || !maxprice || !radius) {
             alert("请填写房子信息");
-        } else if (!location) {
+        } else if (!lon|!lat) {
             alert("请重新选取坐标");
         } else {
-            // alert(minprice+maxprice+radius+);
             $.post("/Search?minprice=" + minprice + "&maxprice=" + maxprice + "&radius=" + radius + "&lon=" + lon+"&lat="+lat, function (data) {
-                alert(data);
+                if(data){
+                    addmarker(data);
+                }else{
+                    alert("在此条件下没有结果");
+                }
             });
         }
     });
