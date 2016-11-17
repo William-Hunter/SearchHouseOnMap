@@ -34,21 +34,17 @@
     <input id='radius' class="inputtext" type='text' placeholder='半径(KM)'>
     <input id="query" class="button" value="搜索" type="button"/>
 </div>
-
-
 <script type="text/javascript">
-
     var lat = '';
     var lon = '';
-
     var map = new AMap.Map('container', {
         resizeEnable: true,
         zoom: 14,
         center: [116.397428, 39.90923]
     });
 
-    AMap.plugin(['AMap.ToolBar', 'AMap.Scale'], function () {
-        var toolBar = new AMap.ToolBar();                   //工具条和比例尺
+    AMap.plugin(['AMap.ToolBar', 'AMap.Scale'], function () {           //工具条和比例尺
+        var toolBar = new AMap.ToolBar();
         var scale = new AMap.Scale();
         map.addControl(toolBar);
         map.addControl(scale);
@@ -63,36 +59,41 @@
         });
     }
 
-    var marker;
-    var markers=[];
-    var circle;
-
     var icon = new AMap.Icon({
         image: './img/pointer.png',
         size: new AMap.Size(28, 28)
     });
 
-
+    var markers=[];
     function clearMarkers(){
         if(markers){                                //如果多个点标记已经出现，就把他们都删除
-            for(var i=0;i<markers.length;i++){
-                markers[i].setMap(null);
-            }
+            map.remove(markers);
         }
     }
 
+    var marker;
     function addmarkers(data) {
         for(var i=0;i<data.length;i++){
-            var point=new AMap.Marker({
+            marker=new AMap.Marker({
                 map:map,
                 position:[data[i].lon,data[i].lat],
                 offset: new AMap.Pixel(-17, -42), //相对于基点的偏移位置
             });
-            markers.push(point);
+            marker.content = "<a target=\"_blank\" href='"+data[i].URL+"'>"+data[i].title+"</a><p><img width='150px' src='"+data[i].imgs.split(",")[0]+"'></p><p>"+data[i].price+data[i].unit+"</p>";
+            marker.on('click', _onClick);                  //监听对象的事件并且绑定函数
+            marker.emit('click', {target: marker});
+            markers.push(marker);
         }
         console.log("符合条件的公寓数："+i);
     }
 
+    var infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -30)});
+    var _onClick = function (e) {               //搜索结果的点击函数
+        infoWindow.setContent(e.target.content);
+        infoWindow.open(map, e.target.getPosition());
+    }
+
+    var circle;
     function clearCircle(){
          if(circle){                                 //清除圆
             circle.setMap(null);
@@ -100,49 +101,47 @@
     }
 
     function addCircle(radius){
-        circle = new AMap.Circle({                  //创建一个圆的效果
-            center: [lon, lat],
-            redius: radius,
-            fillOpacity:0.1,
-            fillColor:'#09f',
-            strokeColor:'#09f',
-            strokeWeight:1
+        circle = new AMap.Circle({
+            center: new AMap.LngLat(lon, lat),// 圆心位置
+            radius: radius*1000, //半径
+            strokeColor: "#0000CD", //线颜色
+            strokeOpacity: 1, //线透明度
+            strokeWeight: 3, //线粗细度
+            fillColor: "#BBFFFF", //填充颜色
+            fillOpacity: 0.35//填充透明度
         });
         circle.setMap(map);
-
     }
 
-    function changeMarker() {
+    var point;
+    function changePointer() {
         clearMarkers();
         clearCircle();
-        if (marker) {                               //如果已经点击过，就在地图上更新位置
-            marker.setPosition([lon, lat]);
+        if (point) {                               //如果已经点击过，就在地图上更新位置
+            point.setPosition([lon, lat]);
         } else {
-            marker = new AMap.Marker({ //添加自定义点标记
+            point = new AMap.Marker({ //添加自定义点标记
                 map: map,
                 position: [lon, lat], //基点位置
                 offset: new AMap.Pixel(-15, -25), //相对于基点的偏移位置 x+right-left,y+down-up
                 icon:icon
             });
         }
-        marker.setMap(map);
+        point.setMap(map);
     }
 
     var clickEventListener = map.on('click', function (e) {                 //选取地点的点击函数
         lat = e.lnglat.getLat();
         lon = e.lnglat.getLng();
-        clearMarkers();
-        changeMarker();
+        changePointer();
     });
-
-
 
     AMap.event.addDomListener(document.getElementById('query'), 'click', function () {            //监听id为pantoBtn的元素的点击事件
         var minprice = document.getElementById('minprice').value;
         var maxprice = document.getElementById('maxprice').value;
         var radius = document.getElementById('radius').value;
         if (!minprice || !maxprice || !radius) {
-            alert("请填写房子信息");
+            alert("请填写房子条件");
         } else if (!lon|!lat) {
             alert("请重新选取坐标");
         } else {
@@ -151,15 +150,20 @@
                 if(data){
                     addmarkers(data);
                     clearCircle();
-                    addCircle(radius);
+                    addCircle(parseInt(radius));
                 }else{
                     alert("在此条件下没有结果");
                 }
             });
         }
     });
+
+
+
+
+
+
+
     </script>
-
-
 </body>
 </html>
