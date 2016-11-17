@@ -87,9 +87,9 @@ public class Access {
         logger.info(this.getClass().getName()+".select()");
 
         sql = new StringBuilder("SELECT * FROM House WHERE price<="+maxprice+" AND price>="+minprice+";");
+        logger.debug("SQL:"+sql.toString());
         ps = con.prepareStatement(sql.toString());
         rs=ps.executeQuery();                                  //得到结果集
-        logger.debug("SQL:"+sql.toString());
 
         House house=new House();                               //实例一个house对象，获取其中的属性
         Class _class=house.getClass();
