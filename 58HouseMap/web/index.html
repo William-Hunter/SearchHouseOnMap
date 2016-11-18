@@ -34,6 +34,16 @@
     <input id='radius' class="inputtext" type='text' placeholder='半径(KM)'>
     <input id="query" class="button" value="搜索" type="button"/>
 </div>
+
+<div class="button-group" id='button_group' style='top:15px;bottom:inherit;text-align: center;'>
+    <img src="./img/code.png" style='width:120px;height:120px'>
+    <div style="margin:auto;">
+        <button class='button' style='text-align: center;'>
+            <a target="_blank" href="https://github.com/William-Hunter/SearchHouseOnMap">GITHUB Source Code</a>
+        </button>
+    </div>
+</div>
+
 <script type="text/javascript">
     var lat = '';
     var lon = '';
@@ -64,27 +74,27 @@
         size: new AMap.Size(28, 28)
     });
 
-    var markers=[];
-    function clearMarkers(){
-        if(markers){                                //如果多个点标记已经出现，就把他们都删除
+    var markers = [];
+    function clearMarkers() {
+        if (markers) {                                //如果多个点标记已经出现，就把他们都删除
             map.remove(markers);
         }
     }
 
     var marker;
     function addmarkers(data) {
-        for(var i=0;i<data.length;i++){
-            marker=new AMap.Marker({
-                map:map,
-                position:[data[i].lon,data[i].lat],
+        for (var i = 0; i < data.length; i++) {
+            marker = new AMap.Marker({
+                map: map,
+                position: [data[i].lon, data[i].lat],
                 offset: new AMap.Pixel(-17, -42), //相对于基点的偏移位置
             });
-            marker.content = "<a target=\"_blank\" href='"+data[i].URL+"'>"+data[i].title+"</a><p><img width='150px' src='"+data[i].imgs.split(",")[0]+"'></p><p>"+data[i].price+data[i].unit+"</p>";
+            marker.content = "<a target=\"_blank\" href='" + data[i].URL + "'>" + data[i].title + "</a><p><img width='150px' src='" + data[i].imgs.split(",")[0] + "'></p><p>" + data[i].price + data[i].unit + "</p>";
             marker.on('click', _onClick);                  //监听对象的事件并且绑定函数
             marker.emit('click', {target: marker});
             markers.push(marker);
         }
-        console.log("符合条件的公寓数："+i);
+        console.log("符合条件的公寓数：" + i);
     }
 
     var infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -30)});
@@ -94,16 +104,16 @@
     }
 
     var circle;
-    function clearCircle(){
-         if(circle){                                 //清除圆
+    function clearCircle() {
+        if (circle) {                                 //清除圆
             circle.setMap(null);
         }
     }
 
-    function addCircle(radius){
+    function addCircle(radius) {
         circle = new AMap.Circle({
             center: new AMap.LngLat(lon, lat),// 圆心位置
-            radius: radius*1000, //半径
+            radius: radius * 1000, //半径
             strokeColor: "#0000CD", //线颜色
             strokeOpacity: 1, //线透明度
             strokeWeight: 3, //线粗细度
@@ -124,7 +134,7 @@
                 map: map,
                 position: [lon, lat], //基点位置
                 offset: new AMap.Pixel(-15, -25), //相对于基点的偏移位置 x+right-left,y+down-up
-                icon:icon
+                icon: icon
             });
         }
         point.setMap(map);
@@ -142,16 +152,16 @@
         var radius = document.getElementById('radius').value;
         if (!minprice || !maxprice || !radius) {
             alert("请填写房子条件");
-        } else if (!lon|!lat) {
+        } else if (!lon | !lat) {
             alert("请重新选取坐标");
         } else {
             clearMarkers();
-            $.post("/Search?minprice=" + minprice + "&maxprice=" + maxprice + "&radius=" + radius + "&lon=" + lon+"&lat="+lat, function (data) {
-                if(data){
+            $.post("/Search?minprice=" + minprice + "&maxprice=" + maxprice + "&radius=" + radius + "&lon=" + lon + "&lat=" + lat, function (data) {
+                if (data) {
                     addmarkers(data);
                     clearCircle();
                     addCircle(parseInt(radius));
-                }else{
+                } else {
                     alert("在此条件下没有结果");
                 }
             });
@@ -159,11 +169,6 @@
     });
 
 
-
-
-
-
-
-    </script>
+</script>
 </body>
 </html>

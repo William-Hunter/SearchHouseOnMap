@@ -19,8 +19,7 @@ public class Access {
     public Access() {           //初始化连接数据库
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/searchhouse", "root", "root");
-            con.setAutoCommit(false);
+            con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/searchhouse", "root", "william");
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
