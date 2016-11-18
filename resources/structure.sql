@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50710
 File Encoding         : 65001
 
-Date: 2016-09-26 21:09:03
+Date: 2016-11-18 09:48:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS `house`;
 CREATE TABLE `house` (
   `ids` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(45) NOT NULL COMMENT '标题',
-  `price` varchar(10) NOT NULL COMMENT '价格',
+  `price` int(8) NOT NULL COMMENT '价格',
   `tags` varchar(45) DEFAULT NULL COMMENT '特点',
   `imgs` varchar(2000) DEFAULT NULL COMMENT '图片链接',
   `time` varchar(45) DEFAULT NULL COMMENT '更新时间',
@@ -34,4 +34,4 @@ CREATE TABLE `house` (
   `unit` varchar(100) NOT NULL COMMENT '价格单位',
   `URL` varchar(200) NOT NULL COMMENT '网址',
   PRIMARY KEY (`ids`)
-) ENGINE=InnoDB AUTO_INCREMENT=3528 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4667 DEFAULT CHARSET=utf8;

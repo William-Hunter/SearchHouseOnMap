@@ -45,6 +45,10 @@
 </div>
 
 <script type="text/javascript">
+    var rootName;
+    rootName='';
+//    rootName='/58HouseMap';
+
     var lat = '';
     var lon = '';
     var map = new AMap.Map('container', {
@@ -156,7 +160,7 @@
             alert("请重新选取坐标");
         } else {
             clearMarkers();
-            $.post("/Search?minprice=" + minprice + "&maxprice=" + maxprice + "&radius=" + radius + "&lon=" + lon + "&lat=" + lat, function (data) {
+            $.post(rootName+"/Search?minprice=" + minprice + "&maxprice=" + maxprice + "&radius=" + radius + "&lon=" + lon + "&lat=" + lat, function (data) {
                 if (data) {
                     addmarkers(data);
                     clearCircle();
