@@ -1,25 +1,25 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
-Source Server Version : 50710
-Source Host           : localhost:3306
+Source Server         : poorman
+Source Server Version : 50553
+Source Host           : 139.224.194.154:3306
 Source Database       : searchhouse
 
 Target Server Type    : MYSQL
-Target Server Version : 50710
+Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2016-11-18 09:48:43
+Date: 2016-11-18 20:57:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for house
+-- Table structure for House
 -- ----------------------------
-DROP TABLE IF EXISTS `house`;
-CREATE TABLE `house` (
+DROP TABLE IF EXISTS `House`;
+CREATE TABLE `House` (
   `ids` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(45) NOT NULL COMMENT '标题',
   `price` int(8) NOT NULL COMMENT '价格',
@@ -34,4 +34,4 @@ CREATE TABLE `house` (
   `unit` varchar(100) NOT NULL COMMENT '价格单位',
   `URL` varchar(200) NOT NULL COMMENT '网址',
   PRIMARY KEY (`ids`)
-) ENGINE=InnoDB AUTO_INCREMENT=4667 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4667 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
