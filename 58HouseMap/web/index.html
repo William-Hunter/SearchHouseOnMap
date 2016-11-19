@@ -15,9 +15,15 @@
     <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
 
     <style type="text/css">
-        #container {
-            width: 1225px;
-            height: 585px;
+        #container {                 /*自动适应屏幕*/
+            width: 100%;
+            height:100%
+        }
+        #infodiv{
+            width: 190px;
+        }
+        p{
+            margin: 5px;
         }
 
     </style>
@@ -35,7 +41,7 @@
     <input id="query" class="button" value="搜索" type="button"/>
 </div>
 
-<div class="button-group" id='button_group' style='top:15px;bottom:inherit;text-align: center;'>
+<div class="button-group" id='button_group' style='top:50px;right: 0px;bottom:inherit;text-align: center;'>
     <img src="./img/code.png" style='width:120px;height:120px'>
     <div style="margin:auto;">
         <button class='button' style='text-align: center;'>
@@ -93,7 +99,7 @@
                 position: [data[i].lon, data[i].lat],
                 offset: new AMap.Pixel(-17, -42), //相对于基点的偏移位置
             });
-            marker.content = "<a target=\"_blank\" href='" + data[i].URL + "'>" + data[i].title + "</a><p><img width='150px' src='" + data[i].imgs.split(",")[0] + "'></p><p>" + data[i].price + data[i].unit + "</p>";
+            marker.content = "<div id='infodiv'><a target=\"_blank\" href='" + data[i].URL + "'>" + data[i].title + "</a><p><img width='150px' src='" + data[i].imgs.split(",")[0] + "'></p><p>价格：" + data[i].price + data[i].unit + "</p><p>"+data[i].time+"</p><p>"+data[i].houseInfo+"</p><p>CALL:"+data[i].phone+"</p></div>";
             marker.on('click', _onClick);                  //监听对象的事件并且绑定函数
             marker.emit('click', {target: marker});
             markers.push(marker);
@@ -129,6 +135,7 @@
 
     var point;
     function changePointer() {
+        infoWindow.close();
         clearMarkers();
         clearCircle();
         if (point) {                               //如果已经点击过，就在地图上更新位置

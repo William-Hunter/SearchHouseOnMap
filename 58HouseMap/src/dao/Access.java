@@ -85,12 +85,13 @@ public class Access {
         logger.info("-----------------------------------------------");
         logger.info(this.getClass().getName()+".select()");
 
-        sql = new StringBuilder("SELECT * FROM House WHERE price<="+maxprice+" AND price>="+minprice+";");
+        sql = new StringBuilder("SELECT ids,title,price,imgs,lat,lon,time,phone,unit,houseInfo,URL FROM House WHERE price<="+maxprice+" AND price>="+minprice+";");
         logger.debug("SQL:"+sql.toString());
         ps = con.prepareStatement(sql.toString());
         rs=ps.executeQuery();                                  //得到结果集
 
-        House house=new House();                               //实例一个house对象，获取其中的属性
+        House house=new House();                               //实例一个house对象，获取其中的属性\
+
         Class _class=house.getClass();
         Field[] fields= _class.getDeclaredFields();
 
@@ -100,11 +101,18 @@ public class Access {
             for(rs.first();!rs.isAfterLast();rs.next()){        //将房子信息添加到list
                 house=new House();
                 for(Field field:fields){
+                    try {
+                        rs.getString(field.getName());
+                    }catch (SQLException e){
+                        continue;
+                    }
                     field.set(house,rs.getString(field.getName()));
                 }
+
                 list.add(house);
             }
         }catch (NullPointerException|SQLException e){
+            e.printStackTrace();
             return null;
         }
 
