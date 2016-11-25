@@ -17,8 +17,9 @@
         <url-pattern>/Search</url-pattern>
     </servlet-mapping>
     <listener>
-        <listener-class>listener.AppListener</listener-class>
+        <listener-class>listener.DataSource</listener-class>
     </listener>
+
 
 
 </web-app>

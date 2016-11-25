@@ -7,8 +7,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.sql.SQLException;
 
-public class AppListener implements ServletContextListener {
-	Logger logger= LoggerFactory.getLogger(AppListener.class);
+public class DataSource implements ServletContextListener {
+	Logger logger= LoggerFactory.getLogger(DataSource.class);
 
 	public static Access access;
 	@Override

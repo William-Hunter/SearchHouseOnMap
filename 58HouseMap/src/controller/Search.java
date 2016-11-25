@@ -1,15 +1,12 @@
 package controller;
 import bean.House;
 import com.google.gson.Gson;
-import listener.AppListener;
+import listener.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.text.normalizer.UTF16;
-
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +48,7 @@ public class Search extends HttpServlet {
 
         List<House> list=null;
         try {
-            list= AppListener.access.select(minprice,maxprice);
+            list= DataSource.access.select(minprice,maxprice);
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
