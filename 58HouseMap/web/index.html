@@ -34,14 +34,14 @@
     <span id="info"></span>
 </div>
 
-<div class="button-group">
+<div id="Controls" class="button-group" style="display: none;">
     <input id='minprice' class="inputtext" type='text' placeholder='房租最低价'>
     <input id='maxprice' class="inputtext" type='text' placeholder='房租最高价'>
     <input id='radius' class="inputtext" type='text' placeholder='搜索半径(KM)'>
     <input id="query" class="button" value="搜索" type="button"/>
 </div>
 
-<div class="button-group" id='button_group' style='top:50px;right: 0px;bottom:inherit;text-align: center;'>
+<div class="button-group" id='button_group' style='top:50px;right: 0px;bottom:inherit;text-align: center;display:none;'>
     <img src="./img/code.png" style='width:120px;height:120px'>
     <div style="margin:auto;">
         <button class='button' style='text-align: center;'>
@@ -52,8 +52,8 @@
 
 <script type="text/javascript">
     var rootName;
-    rootName='';
-//    rootName='/58HouseMap';
+//    rootName='';
+    rootName='/58HouseMap';
 
     var lat = '';
     var lon = '';
@@ -155,6 +155,8 @@
         lat = e.lnglat.getLat();
         lon = e.lnglat.getLng();
         changePointer();
+        document.getElementById("Controls").style.display="";
+        document.getElementById("button_group").style.display="";
     });
 
     AMap.event.addDomListener(document.getElementById('query'), 'click', function () {            //监听id为pantoBtn的元素的点击事件
