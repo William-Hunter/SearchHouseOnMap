@@ -2,6 +2,13 @@
 <project version="4">
   <component name="PublishConfigData" serverName="poorman">
     <serverData>
+      <paths name="dede">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="php.ini">
         <serverdata>
           <mappings>

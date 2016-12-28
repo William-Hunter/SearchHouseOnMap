@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE project>
+
+<Context>
+<Resource 
+                name="jdbc/MysqlTest"
+                auth="Container" 
+                type="javax.sql.DataSource"
+                username="root" 
+                password="IWantFuckTheWorld"
+                driverClassName="com.mysql.jdbc.Driver"
+                url="jdbc:mysql://127.0.0.1:3306/searchhouse"
+                maxActive="10" maxIdle="4" />
+
+</Context>

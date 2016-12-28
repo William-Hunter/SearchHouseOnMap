@@ -18,6 +18,14 @@
           <option name="port" value="22" />
         </fileTransfer>
       </webServer>
+      <webServer id="738ed032-feaa-42ca-8cdd-b876a613f79a" name="dede" url="http://139.224.194.154">
+        <fileTransfer host="139.224.194.154" port="22" rootFolder="/var/www" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>

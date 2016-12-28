@@ -3,6 +3,8 @@ package listener;
 import dao.Access;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.naming.NamingException;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.sql.SQLException;
@@ -13,7 +15,13 @@ public class DataSource implements ServletContextListener {
 	public static Access access;
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
-		access=new Access();
+		try {
+			access=new Access();
+		} catch (NamingException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		try {
 			if(access.isContect()){
 				logger.info("数据库已经连接");
