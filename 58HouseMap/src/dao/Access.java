@@ -19,12 +19,12 @@ public class Access {
     static ResultSet rs;
     public static Connection con;
     static PreparedStatement ps;
+    static DataSource ds;
 
     public Access() throws NamingException, SQLException {           //初始化连接数据库
-
         Context context = new InitialContext();
         context = (Context) context.lookup("java:/comp/env");
-        DataSource ds = (DataSource) context.lookup("jdbc/MysqlTest");
+        ds = (DataSource) context.lookup("jdbc/MysqlTest");
         con = ds.getConnection();
 
 //            Class.forName("com.mysql.jdbc.Driver");
@@ -60,6 +60,7 @@ public class Access {
 
     //调用私用属性会产生意外
     public int insert(House house) throws Exception {
+        keepConnection();
         sql = new StringBuilder("INSERT INTO ");
         StringBuilder value = new StringBuilder("VALUES(");
         Class _class = house.getClass();
@@ -91,9 +92,9 @@ public class Access {
      * 获取合适价位的房子信息，组织成一个list
      */
     public List<House> select(String minprice, String maxprice) throws SQLException, IllegalAccessException {
+        keepConnection();
         logger.info("-----------------------------------------------");
         logger.info(this.getClass().getName() + ".select()");
-
         sql = new StringBuilder("SELECT ids,title,price,imgs,lat,lon,time,phone,unit,houseInfo,URL FROM House WHERE price<=" + maxprice + " AND price>=" + minprice + ";");
         logger.debug("SQL:" + sql.toString());
         ps = con.prepareStatement(sql.toString());
@@ -128,6 +129,11 @@ public class Access {
         logger.info("-----------------------------------------------");
         return list;
     }
-
+    static boolean keepConnection() throws SQLException {
+        if(con.isClosed()){
+            con=ds.getConnection();
+        }
+        return !con.isClosed();
+    }
 
 }
