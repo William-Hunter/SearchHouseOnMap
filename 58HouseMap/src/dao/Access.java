@@ -130,10 +130,16 @@ public class Access {
         return list;
     }
     static boolean keepConnection() throws SQLException {
-        if(con.isClosed()){
+        try{
+            ps=con.prepareStatement("SELECT 1;");
+            rs = ps.executeQuery();
+        }catch (SQLException e){
             con=ds.getConnection();
+            con.setAutoCommit(false);
+            e.printStackTrace();
+        }finally {
+            return !con.isClosed();
         }
-        return !con.isClosed();
     }
 
 }
