@@ -15,7 +15,7 @@
 ###测试网址
 ------------------------
 
-[58 house map](http://139.224.194.154:8080/58HouseMap/)
+[58 house map](http://dongchenlong.com/58HouseMap/)
 
 ps:目前只支持北京地区的房源
 
