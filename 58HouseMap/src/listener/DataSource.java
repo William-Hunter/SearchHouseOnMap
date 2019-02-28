@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import javax.naming.NamingException;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class DataSource implements ServletContextListener {
@@ -17,18 +18,16 @@ public class DataSource implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent event) {
 		try {
 			access=new Access();
-		} catch (NamingException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		try {
-			if(access.isContect()){
+			if (access.isContect()) {
 				logger.info("数据库已经连接");
-            }else{
+			} else {
 				logger.info("数据库连接失败");
 			}
 		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 

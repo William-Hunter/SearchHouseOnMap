@@ -8,10 +8,15 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 
 public class Access {
     Logger logger = LoggerFactory.getLogger(Access.class);
@@ -19,29 +24,41 @@ public class Access {
     static ResultSet rs;
     public static Connection con;
     static PreparedStatement ps;
-    static DataSource ds;
+//    static DataSource ds;
 
-    public Access() throws NamingException, SQLException {           //初始化连接数据库
-        Context context = new InitialContext();
-        context = (Context) context.lookup("java:/comp/env");
-        ds = (DataSource) context.lookup("jdbc/MysqlTest");
-        con = ds.getConnection();
-
-//            Class.forName("com.mysql.jdbc.Driver");
-//            con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/searchhouse", "root", "IWantFuckTheWorld");
+    public Access() throws ClassNotFoundException, IOException, SQLException {           //初始化连接数据库
+//        Context context = new InitialContext();
+//        context = (Context) context.lookup("java:/comp/env");
+//        ds = (DataSource) context.lookup("jdbc/MysqlTest");
+//        con = ds.getConnection();
+        getConnection();
 
     }
 
-    public boolean isContect() throws ClassNotFoundException {           //测试是否连接
-        try {
-            if (!con.isClosed()) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (SQLException e) {
+    public static void getConnection() throws ClassNotFoundException, IOException, SQLException {
+        Class.forName("com.mysql.jdbc.Driver");
+        Properties prop = new Properties();
+        InputStream in =Access.class.getClassLoader().getResourceAsStream("db.properties");
+        prop.load(in);                                                         //将属性文件流装载到Properties对象中
+        con = DriverManager.getConnection(prop.getProperty("mysql.url"), prop.getProperty("mysql.user"),
+                                          prop.getProperty("mysql.passwd"));
+    }
+
+
+    public boolean isContect() throws SQLException {           //测试是否连接
+            return !con.isClosed()?true:false;
+    }
+
+    static boolean keepConnection() throws SQLException {
+        try{
+            ps=con.prepareStatement("SELECT 1;");
+            rs = ps.executeQuery();
+        }catch (SQLException e){
+            getConnection();
+            con.setAutoCommit(false);
             e.printStackTrace();
-            return false;
+        }finally {
+            return !con.isClosed();
         }
     }
 
@@ -84,7 +101,6 @@ public class Access {
 //            logger.debug(fields[index].getName()+":"+fields[index].get(house));         //字段值打印
             ps.setObject(index + 1, fields[index].get(house));
         }
-
         return ps.executeUpdate();
     }
 
@@ -95,7 +111,8 @@ public class Access {
         keepConnection();
         logger.info("-----------------------------------------------");
         logger.info(this.getClass().getName() + ".select()");
-        sql = new StringBuilder("SELECT ids,title,price,imgs,lat,lon,time,phone,unit,houseInfo,URL FROM House WHERE price<=" + maxprice + " AND price>=" + minprice + ";");
+        sql = new StringBuilder("SELECT ids,title,price,imgs,lat,lon,time,phone,unit,houseInfo,URL FROM House WHERE price<="
+                                        + maxprice + " AND price>=" + minprice + ";");
         logger.debug("SQL:" + sql.toString());
         ps = con.prepareStatement(sql.toString());
         rs = ps.executeQuery();                                  //得到结果集
@@ -106,7 +123,6 @@ public class Access {
         Field[] fields = _class.getDeclaredFields();
 
         List<House> list = new LinkedList<House>();
-
         try {
             for (rs.first(); !rs.isAfterLast(); rs.next()) {        //将房子信息添加到list
                 house = new House();
@@ -118,7 +134,6 @@ public class Access {
                     }
                     field.set(house, rs.getString(field.getName()));
                 }
-
                 list.add(house);
             }
         } catch (NullPointerException | SQLException e) {
@@ -129,17 +144,6 @@ public class Access {
         logger.info("-----------------------------------------------");
         return list;
     }
-    static boolean keepConnection() throws SQLException {
-        try{
-            ps=con.prepareStatement("SELECT 1;");
-            rs = ps.executeQuery();
-        }catch (SQLException e){
-            con=ds.getConnection();
-            con.setAutoCommit(false);
-            e.printStackTrace();
-        }finally {
-            return !con.isClosed();
-        }
-    }
+
 
 }

@@ -39,6 +39,7 @@
     <input id='maxprice' class="inputtext" type='text' placeholder='房租最高价'>
     <input id='radius' class="inputtext" type='text' placeholder='搜索半径(KM)'>
     <input id="query" class="button" value="搜索" type="button"/>
+    <input id="clean" class="button" value="重置" type="button"/>
 </div>
 
 <div class="button-group" id='button_group' style='top:50px;right: 0px;bottom:inherit;text-align: center;display:none;'>
@@ -153,6 +154,11 @@
         changePointer();
         document.getElementById("Controls").style.display="";
         document.getElementById("button_group").style.display="";
+    });
+
+    AMap.event.addDomListener(document.getElementById('clean'), 'click', function () {            //点击清理按钮
+        changePointer();
+        $('div#Controls>input[type=text]').val('');
     });
 
     AMap.event.addDomListener(document.getElementById('query'), 'click', function () {            //监听id为pantoBtn的元素的点击事件
